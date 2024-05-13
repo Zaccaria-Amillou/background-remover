@@ -27,3 +27,19 @@ streamlit run str_app.py
 
 Then, open your web browse and go http://localhost:8501 to view the app.
 
+## Example
+
+<table>
+  <tr>
+    <td align="center">
+      <img src="src/static/img/before.png" width="200" style="border:1px solid black">
+      <br />
+      <em>Before</em>
+    </td>
+    <td align="center">
+      <img src="src/static/img/after.png" width="200" style="border:1px solid black">
+      <br />
+      <em>After</em>
+    </td>
+  </tr>
+</table>
