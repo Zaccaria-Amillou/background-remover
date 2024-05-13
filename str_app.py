@@ -15,6 +15,7 @@ if uploaded_file is not None:
     output_image = remove(image)
     img_io = BytesIO(output_image)
     img_io.seek(0)
+    st.image(img_io, caption='Image without background.', use_column_width=True)
     st.download_button(
         label="Download image with background removed",
         data=img_io.getvalue(),
