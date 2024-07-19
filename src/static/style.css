@@ -1,0 +1,21 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    padding: 0;
+    background-color: #f4f4f4;
+    text-align: center;
+}
+form {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    display: inline-block;
+    margin-top: 20px;
+}
+input[type="file"] {
+    margin-bottom: 10px;
+}
+.file-name {
+    margin-top: 10px;
+    color: #666;
+}

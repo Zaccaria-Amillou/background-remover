@@ -1,24 +1,35 @@
-import streamlit as st
+from flask import Flask, request, send_file, render_template
 from rembg import remove
 from PIL import Image
 from io import BytesIO
+import os
 
-st.title('Background Remover')
+app = Flask(__name__, static_folder='src/static')
 
-uploaded_file = st.file_uploader("Choose an image...", type=["jpg", "png"])
+@app.route('/')
+def index():
+    return render_template('index.html')
 
-if uploaded_file is not None:
-    image = uploaded_file.read()
-    st.image(image, caption='Uploaded Image.', use_column_width=True)
-    st.write("")
-    st.write("Processing...")
-    output_image = remove(image)
-    img_io = BytesIO(output_image)
-    img_io.seek(0)
-    st.image(img_io, caption='Image without background.', use_column_width=True)
-    st.download_button(
-        label="Download image with background removed",
-        data=img_io.getvalue(),
-        file_name='image_no_bg.png',
-        mime='image/png'
-    )
+@app.route('/upload', methods=['POST'])
+def upload_file():
+    if 'file' not in request.files:
+        return 'No file part', 400
+    file = request.files['file']
+    if file.filename == '':
+        return 'No selected file', 400
+    if file and allowed_file(file.filename):
+        image = file.read()
+        output_image = remove(image)
+        
+        img = Image.open(BytesIO(output_image)).convert("RGBA")
+        img_io = BytesIO()
+        img.save(img_io, 'PNG', quality=70)  
+        img_io.seek(0)
+        
+        return send_file(img_io, mimetype='image/png', as_attachment=True, download_name='image_transparent_bg.png')
+
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ['jpg', 'png']
+
+if __name__ == '__main__':
+    app.run(debug=False)  

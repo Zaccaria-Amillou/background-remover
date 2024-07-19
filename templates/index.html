@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Image</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h2>Upload Image to Remove Background</h2>
+    <p>Please upload a JPG or PNG image. The maximum file size allowed is 5MB.</p>
+    <form action="/upload" method="post" enctype="multipart/form-data">
+        <input type="file" name="file" accept="image/png, image/jpeg" onchange="updateFileName(this)">
+        <input type="submit" value="Upload Image">
+        <div class="file-name" id="file-name"></div>
+    </form>
+    <script>
+        function updateFileName(input) {
+            var fileName = input.files[0].name;
+            document.getElementById('file-name').textContent = 'Selected file: ' + fileName;
+        }
+    </script>
+</body>
+</html>
