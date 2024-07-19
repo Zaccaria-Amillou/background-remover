@@ -1,26 +1,26 @@
-import os
 import pytest
-from str_app import app
-from werkzeug.datastructures import FileStorage
+from unittest.mock import patch
+from PIL import Image
 from io import BytesIO
+from str_app import remove_background
+
+def create_test_image_bytes():
+    img = Image.new('RGB', (100, 100), color = 'red')
+    img_bytes = BytesIO()
+    img.save(img_bytes, format='PNG')
+    img_bytes.seek(0)
+    return img_bytes.read()
 
 @pytest.fixture
-def client():
-    app.config['TESTING'] = True
-    with app.test_client() as client:
-        yield client
+def image_bytes():
+    return create_test_image_bytes()
 
-def test_upload_file(client):
-    # Open the actual image file in binary mode
-    with open('src/static/img/before.png', 'rb') as img_file:
-        data = {
-            'file': (img_file, 'before.png')
-        }
-        # Send POST request to /upload route
-        response = client.post('/upload', content_type='multipart/form-data', data=data)
-    
-    # Assert the response status code
-    assert response.status_code == 200
-    # Optionally, assert other aspects of the response (e.g., content type, attachment filename)
-    assert response.content_type == 'image/png'
-    assert 'image_transparent_bg.png' in response.headers.get('Content-Disposition')
+@patch('str_app.remove')
+def test_remove_background(mock_remove, image_bytes):
+    # Mock the remove function to return the original image bytes
+    mock_remove.return_value = image_bytes
+
+    result_img = remove_background(image_bytes)
+
+    assert isinstance(result_img, Image.Image), "The result should be an instance of PIL.Image.Image"
+    assert result_img.mode == "RGBA", "The image mode should be RGBA for transparency"

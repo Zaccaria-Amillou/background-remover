@@ -6,7 +6,9 @@ This is a simple Streamlit application that allows users to upload an image and 
 - Upload an image (supports .jpg and .png formats)
 - Display the uploaded image
 - Process the image to remove the background
-- Downloads the results directly
+- Display the image
+- Give the possibility to donwload it
+
 ## Installation
 
 To install the necessary dependencies be sure to run the following command
@@ -20,10 +22,10 @@ pip install -r requirements.txt
 To start the Streamlit app, navigate to the project directory and run the following commang:
 
 ```bash
-python str_app.py
+streamlit run str_app.py
 ```
 
-Then, open your web browse and go http://127.0.0.1:5000 to view the app.
+Then, open your web browser and go to localhost:5000 to view the app.
 
 ## Unit Test
 If you'd like to run a test to see if everything is functional you can type
